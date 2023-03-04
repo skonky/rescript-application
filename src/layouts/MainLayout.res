@@ -1,36 +1,47 @@
 module Link = Next.Link
 
+type link = {
+  href: string,
+  target: string,
+  title: string,
+}
+
 module Navigation = {
+  let title = "Next.JS + Rescript"
+  let links: array<link> = [
+    {
+      href: "/",
+      title: "Home",
+      target: "_self",
+    },
+    {
+      href: "/examples",
+      title: "Examples",
+      target: "_self",
+    },
+  ]
+
   @react.component
   let make = () =>
-    <nav className="p-2 h-12 flex border-b border-gray-200 justify-between items-center text-sm">
-      <Link href="/">
-        <a className="flex items-center w-1/3">
-          <img className="w-5" src="/static/zeit-black-triangle.svg" />
-          <span className="text-xl ml-2 align-middle font-semibold">
-            {React.string("Next")} <span className="text-orange-800"> {React.string(" + ReScript")} </span>
-          </span>
-        </a>
-      </Link>
-      <div className="flex w-2/3 justify-end">
-        <Link href="/"> <a className="px-3"> {React.string("Home")} </a> </Link>
-        <Link href="/examples"> <a className="px-3"> {React.string("Examples")} </a> </Link>
-        <a
-          className="px-3 font-bold"
-          target="_blank"
-          href="https://github.com/ryyppy/nextjs-default">
-          {React.string("Github")}
-        </a>
+    <div className="navbar sticky bg-base-300">
+      <div className="flex-1">
+        <a className="btn btn-ghost normal-case text-xl"> {title->React.string} </a>
       </div>
-    </nav>
+      <div className="flex-none">
+        <ul className="menu menu-horizontal px-1 gap-3">
+          {links
+          ->Js.Array2.map(link =>
+            <li>
+              <Link href=link.href> <a className="px-3"> {link.title->React.string} </a> </Link>
+            </li>
+          )
+          ->React.array}
+        </ul>
+      </div>
+    </div>
 }
 
 @react.component
 let make = (~children) => {
-  let minWidth = ReactDOM.Style.make(~minWidth="20rem", ())
-  <div style=minWidth className="flex lg:justify-center">
-    <div className="max-w-5xl w-full lg:w-3/4 text-gray-900 font-base">
-      <Navigation /> <main className="mt-4 mx-4"> children </main>
-    </div>
-  </div>
+  <> <Navigation /> <div className="w-full font-base"> <main> children </main> </div> </>
 }

@@ -10,10 +10,8 @@ function $$default(props) {
   var match = router.route;
   if (match === "/examples") {
     return React.createElement(MainLayout.make, {
-                children: null
-              }, React.createElement("h1", {
-                    className: "font-bold"
-                  }, "Examples Section"), React.createElement("div", undefined, content));
+                children: content
+              });
   } else {
     return React.createElement(MainLayout.make, {
                 children: content
